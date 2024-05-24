@@ -34,7 +34,7 @@ public class Manager {
     private ArrayList<Monster> monsterList;
     private String backGround;
     private ArrayList<Bomb> arrBomb;
-    private ArrayList<HighScore> hightscoreList;  
+    private ArrayList<HighScore> highscoreList;  
     public int round = 1;
     private int nextRound = 0;
 	private int status = 0;
@@ -47,25 +47,23 @@ public class Manager {
 	public Manager(int type) {
 		this.type = type;
 		countdown = new Countdown();
-//		innitManager();
-		init();  // ?????????????????????????????????
+		initManager();
 	}
 
 	public Manager() {
 		countdown = new Countdown();
-//		innitManager();
-		init();    //????????????????????????????????????
+		initManager();
 	}
 	
 	
-/*	
- public void innitManager() {
+
+ public void initManager() {
 		switch (round) {
 		case 1:
 			countdown.update(2, 0);
 
 			setBomBer();
-			innit("src/map1/BOX.txt", "src/map1/SHADOW.txt", "src/map1/MONSTER.txt", "src/map1/ITEM.txt");
+			init("src/map1/BOX.txt", "src/map1/MONSTER.txt", "src/map1/ITEM.txt");
 			nextRound = 0;
 			status = 0;
 			break;
@@ -74,8 +72,8 @@ public class Manager {
 			countdown.getTimer().start();
 			GameSound.getIstance().stop();
 			GameSound.getIstance().getAudio(GameSound.PLAYGAME).loop();
-			mBomber.setNew(540, 495);
-			innit("src/map2/BOX.txt", "src/map2/SHADOW.txt", "src/map2/MONSTER.txt", "src/map2/ITEM.txt");
+			mBomber.setBounds(540, 495);
+			init("src/map2/BOX.txt", "src/map2/MONSTER.txt", "src/map2/ITEM.txt");
 			nextRound = 0;
 			status = 0;
 			break;
@@ -83,8 +81,8 @@ public class Manager {
 			countdown.update(2, 0);
 			GameSound.getIstance().stop();
 			GameSound.getIstance().getAudio(GameSound.PLAYGAME).loop();
-			mBomber.setNew(540, 495);
-			innit("src/map3/BOX.txt", "src/map3/SHADOW.txt", "src/map3/MONSTER.txt", "src/map3/ITEM.txt");
+			mBomber.setBounds(540, 495);
+			init("src/map3/BOX.txt", "src/map3/MONSTER.txt", "src/map3/ITEM.txt");
 			nextRound = 0;
 			status = 0;
 			break;
@@ -94,7 +92,7 @@ public class Manager {
 		}
 
 	} 
-	*/
+	
 
 	public Countdown getCountdown() {
 		return countdown;
@@ -114,18 +112,18 @@ public class Manager {
 			mBomber = new KhoKho(540, 495, Actor.BOMBER, Actor.DOWN, 5, 1, 1);
 	}
 	
-    
-    public void init(){
+    // khởi tạo map
+    public void init(String pathToBox, String pathToMonster, String pathToItem){
         boxList = new ArrayList<Box>();
         arrBomb = new ArrayList<Bomb>();
         arrBombBang = new ArrayList<BombBang>();
         itemList = new ArrayList<Item>();
         monsterList = new ArrayList<Monster>();
-        hightscoreList = new ArrayList<HighScore>();
-        initBoxList("src/map1/Box.txt");
-        initMonsterList("src/map1/MONSTER.txt");
-        innitItemList("src/map1/ITEM.txt");      
-        initHightScoreList("src/hightscore/HightScore.txt");
+        highscoreList = new ArrayList<HighScore>();
+        initBoxList(pathToBox);
+        initMonsterList(pathToMonster);
+        innitItemList(pathToItem);      
+        inithighscoreList("src/highscore/HighScore.txt");
         
     }
     // khoi tao boxList, ve box, ve background
@@ -202,13 +200,13 @@ public class Manager {
     public void drawAllBox(Graphics2D g2d){
         for (int i=0;i<boxList.size();i++){
             boxList.get(i).drawActor(g2d);
-            System.out.println("Ve box");
+         
         }
     }
     public void draWBackground(Graphics2D g2d) {
 		Image imgBackground = new ImageIcon(getClass().getResource(backGround)).getImage();
 		g2d.drawImage(imgBackground, 0, 40, null);
-        System.out.println("Ve background");
+
 	}
     
 	public int getSore() {
@@ -359,16 +357,16 @@ public class Manager {
 	// chưa sửa
 	public void saveScore() {
 		System.out.println();
-		if (hightscoreList.size() == 0 || hightscoreList.size() < 10) {
+		if (highscoreList.size() == 0 || highscoreList.size() < 10) {
 			String name = JOptionPane.showInputDialog("Please input Your Name");
 			HighScore newScore = new HighScore(name, mBomber.getScore());
-			hightscoreList.add(newScore);
-		} else if (mBomber.getScore() > hightscoreList.get(hightscoreList.size() - 1).getScore()) {
+			highscoreList.add(newScore);
+		} else if (mBomber.getScore() > highscoreList.get(highscoreList.size() - 1).getScore()) {
 			String name = JOptionPane.showInputDialog("Please input Your Name");
 			HighScore newScore = new HighScore(name, mBomber.getScore());
-			hightscoreList.add(newScore);
+			highscoreList.add(newScore);
 		}
-		Collections.sort(hightscoreList, new Comparator<HighScore>() {
+		Collections.sort(highscoreList, new Comparator<HighScore>() {
 
 			@Override
 			public int compare(HighScore score1, HighScore score2) {
@@ -384,14 +382,14 @@ public class Manager {
 			}
 		});
 
-		if (hightscoreList.size() > 10) {
-			hightscoreList.remove(hightscoreList.size() - 1);
+		if (highscoreList.size() > 10) {
+			highscoreList.remove(highscoreList.size() - 1);
 		}
 
 		try {
 			FileOutputStream fileOutput = new FileOutputStream("src/hightscore/HightScore.txt");
-			for (int i = 0; i < hightscoreList.size(); i++) {
-				String content = hightscoreList.get(i).getName() + ":" + hightscoreList.get(i).getScore() + "\n";
+			for (int i = 0; i < highscoreList.size(); i++) {
+				String content = highscoreList.get(i).getName() + ":" + highscoreList.get(i).getScore() + "\n";
 				fileOutput.write(content.getBytes());
 			}
 			fileOutput.close();
@@ -565,17 +563,17 @@ public class Manager {
 
 
 
+*/
 
 	public ArrayList<Box> getArrBox() {
-		return arrBox;
+		return boxList;
 	}
-
 	public ArrayList<Bomb> getArrBomb() {
 		return arrBomb;
 	}
 
 	
-*/
+
 	public void setRunBomer() {
 		if (arrBomb.size() > 0) {
 			if (arrBomb.get(arrBomb.size() - 1).BombvsBomber(mBomber) == false) {
@@ -602,7 +600,7 @@ public class Manager {
 	}
  	
  	
-	public void initHightScoreList(String path) {
+	public void inithighscoreList(String path) {
 		try {
 			FileReader file = new FileReader(path);
 			BufferedReader input = new BufferedReader(file);
@@ -612,7 +610,7 @@ public class Manager {
 				String name = str[0];
 				int score = Integer.parseInt(str[1]);
 				HighScore hightScore = new HighScore(name, score);
-				hightscoreList.add(hightScore);
+				highscoreList.add(hightScore);
 			}
 			input.close();
 		} catch (FileNotFoundException e) {
@@ -622,7 +620,7 @@ public class Manager {
 		}
 	}
 	
-	public Bomber getmBomber() {
+	public Bomber getBomber() {
 		return mBomber;
 	}
 

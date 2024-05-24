@@ -67,23 +67,22 @@ public class ChooseActor extends JPanel implements MouseListener {
     public void mousePressed(MouseEvent e) {
     	 if (e.getSource().equals(lbKhoKho)) {
              guiManager.getBoomPanel().setIS_PAUSE(false);
-             guiManager.showPlayGame();
+             guiManager.showPlayGame(1);
          }
     	 else if (e.getSource().equals(lbBeBong)) {
              guiManager.getBoomPanel().setIS_PAUSE(false);
-             guiManager.showPlayGame();
+             guiManager.showPlayGame(2);
          }
     	 else if (e.getSource().equals(lbTiBanh)) {
              guiManager.getBoomPanel().setIS_PAUSE(false);
-             guiManager.showPlayGame();
+             guiManager.showPlayGame(4);
          }
     	 else if (e.getSource().equals(lbTiaChop)) {
              guiManager.getBoomPanel().setIS_PAUSE(false);
-             guiManager.showPlayGame();
+             guiManager.showPlayGame(3);
          }
     	 else if (e.getSource().equals(lbBack)) {
             if (BoomPanel.HIT_PAUSE) {
-               
                 guiManager.showMenu();
             }
         }

@@ -11,8 +11,8 @@ public abstract class Bomber extends Actor {
     protected int sizeBomb, quantityBomb, status, score, heart;  
 
     
- // Khai báo phương thức trừu tượng để đặt vị trí cho bomber. Được triển thái trong lớp con
-   	public abstract void setBounds(int x, int y);
+
+   	public abstract void setBounds(int x, int y);// hồi sinh
 
    	public int getScore() {
    		return score;
@@ -92,6 +92,7 @@ public abstract class Bomber extends Actor {
 		Rectangle actorBounds = new Rectangle(actor.getX(), actor.getY(), actor.getWidth(), actor.getHeight());
 		return bomberBounds.intersects(actorBounds);  // kiểm tra xem hai hình chữ nhật có giao nhau không
 	}
+
 
 	
 }

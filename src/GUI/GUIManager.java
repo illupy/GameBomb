@@ -67,9 +67,10 @@ public class GUIManager extends JPanel {
     	cardLayout.show(this, CHOOSEACTOR_TAG);
        chooseActor.requestFocus();
     }
-    public void showPlayGame() {
+    public void showPlayGame(int type) {
+        boomPanel.chooseActor(type);
         cardLayout.show(this, PLAYGAME_TAG);
-        boomPanel.requestFocus();
+        boomPanel.gamePanel.requestFocus();
  //      GameSound.getIstance().stop();
  //      GameSound.getIstance().getAudio(GameSound.PLAYGAME).loop();
     }
