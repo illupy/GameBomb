@@ -56,7 +56,7 @@ public int isImpactBoxvsActor(Actor actor) {
 		return 0;
 	}
 	if (rec1.intersects(rec2)) {
-		rec1.intersect(rec1, rec2, rec3);
+		Rectangle.intersect(rec1, rec2, rec3);
 		if (rec3.getHeight() == 1 && (actor.getOrient() == Actor.UP || actor.getOrient() == Actor.DOWN)) {
 			if (actor.getX() == rec3.getX()) {
 				return (int) rec3.getWidth();

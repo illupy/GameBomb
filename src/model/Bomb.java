@@ -21,11 +21,11 @@ public class Bomb extends Actor {
 		 this.countdown = countdown;
 	 }
 	 
-	 public int setSize() {
+	 public int getSize() {
 		 return size;
 	 }
 	 
-	 public void getSize(int size) {
+	 public void setSize(int size) {
 		 this.size = size;
 	 }
     

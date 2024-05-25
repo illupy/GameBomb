@@ -42,6 +42,7 @@ public class Manager {
 	DigitalClock digitalClock = new DigitalClock();
 	private Countdown countdown;
 	private int scoretime;
+	public GameSound sound = new GameSound();
     
     
 	public Manager(int type) {
@@ -70,8 +71,8 @@ public class Manager {
 		case 2:
 			countdown.update(2, 0);
 			countdown.getTimer().start();
-			GameSound.getIstance().stop();
-			GameSound.getIstance().getAudio(GameSound.PLAYGAME).loop();
+			sound.stop();
+			sound.getAudio(GameSound.PLAYGAME).play();;
 			mBomber.setBounds(540, 495);
 			init("src/map2/BOX.txt", "src/map2/MONSTER.txt", "src/map2/ITEM.txt");
 			nextRound = 0;
@@ -79,8 +80,8 @@ public class Manager {
 			break;
 		case 3:
 			countdown.update(2, 0);
-			GameSound.getIstance().stop();
-			GameSound.getIstance().getAudio(GameSound.PLAYGAME).loop();
+			sound.stop();
+			sound.getAudio(GameSound.PLAYGAME).loop();
 			mBomber.setBounds(540, 495);
 			init("src/map3/BOX.txt", "src/map3/MONSTER.txt", "src/map3/ITEM.txt");
 			nextRound = 0;
@@ -168,7 +169,7 @@ public class Manager {
 		if (arrBomb.size() >= mBomber.getQuantityBomb()) {
 			return;
 		}
-		GameSound.getIstance().getAudio(GameSound.BOMB).play();
+		sound.getAudio(GameSound.BOMB).play();
 		Bomb mBomb = new Bomb(x, y, mBomber.getSizeBomb(), 1500);
 		arrBomb.add(mBomb);
 	}
@@ -177,7 +178,7 @@ public class Manager {
 		g2d.setFont(new Font("Georgia", Font.BOLD, 70));
 		g2d.setColor(Color.RED);
 		if (type == 1) {
-			g2d.drawString("Game Over !!! bạn quá gà", 200, 250);
+			g2d.drawString("Game Over !", 200, 250);
 		} else {
 			if (type == 2) {
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) 0.4));
@@ -185,12 +186,10 @@ public class Manager {
 				g2d.fillRect(45, 44, 675, 585);
 				g2d.setColor(Color.WHITE);
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_IN, (float) 0.4));
-
 				g2d.setFont(new Font("Arial", Font.ITALIC, 55));
-				g2d.drawString("Time: " + countdown.getMinute() + ":" + countdown.getSecond(), 230, 250);
 				g2d.drawString("Score: " + mBomber.getScore(), 230, 350);
 				g2d.drawString("Next Round: " + round, 230, 450);
-			} else {
+			} else if(type==3) {
 				g2d.drawString("You Win !!!", 220, 250);
 			}
 		}
@@ -279,14 +278,14 @@ public class Manager {
  					MonsterMinBoss minBoss = new MonsterMinBoss(x, y, type, orient, speed, heart, images);
  					monsterList.add(minBoss);
  				}
- 				/*if (type == Monster.GHOST) {
+ 				if (type == Monster.GHOST) {
  					MonsterGhost ghost = new MonsterGhost(x, y, type, orient, speed, heart, images);
  					monsterList.add(ghost);
  				}
  				if (type == Monster.BOSS) {
  					MonsterBoss boss = new MonsterBoss(x, y, type, orient, speed, heart, images);
  					monsterList.add(boss);
- 				}*/
+ 				}
              }
              input.close();
          } catch (FileNotFoundException e) {
@@ -308,6 +307,30 @@ public class Manager {
  			monsterList.get(i).changeOrient(orient);
  		}
  	}
+	 public void drawInfo(Graphics2D g2d) {
+
+		g2d.setColor(Color.WHITE);
+		Image heart = new ImageIcon(getClass().getResource("/Images/heart_1.png")).getImage();
+		if (mBomber.getHeart() == 3) {
+			g2d.drawImage(heart, 800, 279, null);
+			g2d.drawImage(heart, 830, 279, null);
+			g2d.drawImage(heart, 860, 279, null);
+		}
+		if (mBomber.getHeart() == 2) {
+			g2d.drawImage(heart, 800, 279, null);
+			g2d.drawImage(heart, 830, 279, null);
+		}
+		if (mBomber.getHeart() == 1) {
+			g2d.drawImage(heart, 800, 279, null);
+		}
+		g2d.setFont(new Font("Georgia", Font.BOLD, 30));
+		g2d.drawString("ROUND " + round, 760, 200);
+		g2d.setFont(new Font("Georgia", Font.BOLD, 18));
+		g2d.drawString("Bomb Quantity: " + mBomber.getQuantityBomb(), 750, 357);
+		g2d.drawString("Bomb Size: " + mBomber.getSizeBomb(), 750, 397);
+		g2d.drawString("Speed: " + (10 - mBomber.getSpeed()), 750, 437);
+		g2d.drawString("Score: " + mBomber.getScore(), 750, 477);
+	}
 
  	public void moveAllMonster(int count) {
  		for (int i = 0; i < monsterList.size(); i++) {
@@ -319,7 +342,7 @@ public class Manager {
  		}
  	}
  	
-
+	@SuppressWarnings("removal")
  	
  	// chưa sửa
 	public void checkWinAndLose() {
@@ -328,8 +351,8 @@ public class Manager {
 			status = 1;
 			nextRound++;
 			countdown.getTimer().stop();
-			GameSound.getIstance().stop();
-			GameSound.getIstance().getAudio(GameSound.LOSE).play();
+			sound.stop();
+			sound.getAudio(GameSound.LOSE).play();
 			saveScore();
 		}
 		if (monsterList.size() == 0 && nextRound == 0) {
@@ -337,8 +360,8 @@ public class Manager {
 				status = 3;
 				nextRound++;
 				countdown.getTimer().stop();
-				GameSound.getIstance().stop();
-				GameSound.getIstance().getAudio(GameSound.WIN).play();
+				sound.stop();
+				sound.getAudio(GameSound.WIN).play();
 				saveScore();
 				round = 1;
 				return;
@@ -387,7 +410,7 @@ public class Manager {
 		}
 
 		try {
-			FileOutputStream fileOutput = new FileOutputStream("src/hightscore/HightScore.txt");
+			FileOutputStream fileOutput = new FileOutputStream("src/highscore/HighScore.txt");
 			for (int i = 0; i < highscoreList.size(); i++) {
 				String content = highscoreList.get(i).getName() + ":" + highscoreList.get(i).getScore() + "\n";
 				fileOutput.write(content.getBytes());
@@ -423,7 +446,7 @@ public class Manager {
 				}
 				mBomber.setHeart(mBomber.getHeart() - 1);
 				mBomber.setStatus(Bomber.DEAD);
-				GameSound.instance.getAudio(GameSound.BOMBER_DieDRINK).play();
+				sound.getAudio(GameSound.BOMBER_DieDRINK).play();
 			}
 		}
 		for (int i = 0; i < monsterList.size(); i++) {
@@ -440,117 +463,103 @@ public class Manager {
 				}
 				mBomber.setHeart(mBomber.getHeart() - 1);
 				mBomber.setStatus(Bomber.DEAD);
-				GameSound.instance.getAudio(GameSound.BOMBER_DIE).play();
+				sound.getAudio(GameSound.BOMBER_DIE).play();
 			}
 		}
 	}
 	
-/*	// chưa sửa
 	public void deadLineAllBomb() {
-	for (int i = 0; i < arrBomb.size(); i++) {
-		arrBomb.get(i).deadlineBomb();
-		if (arrBomb.get(i).getCountdown() == 250) {
-			BombBang bomBang = new BombBang(arrBomb.get(i).getX(), arrBomb.get(i).getY(), arrBomb.get(i).getSize(),
-					arrBox);
-			GameSound.getIstance().getAudio(GameSound.BONG_BANG).play();
-			arrBombBang.add(bomBang);
-			arrBomb.remove(i);
-		}
-	}
-	for (int j = 0; j < arrMonster.size(); j++) {
 		for (int i = 0; i < arrBomb.size(); i++) {
-			if (arrBomb.get(i).isImpactBombvsActor(arrMonster.get(j)) == 2) {
-				BombBang bomBang = new BombBang(arrBomb.get(i).getX(), arrBomb.get(i).getY(),
-						arrBomb.get(i).getSize(), arrBox);
-				GameSound.getIstance().getAudio(GameSound.BONG_BANG).play();
+			arrBomb.get(i).deadlineBomb();
+			if (arrBomb.get(i).getCountdown() == 250) {
+				BombBang bomBang = new BombBang(arrBomb.get(i).getX(), arrBomb.get(i).getY(), arrBomb.get(i).getSize(),
+						boxList);
+				sound.getAudio(GameSound.BONG_BANG).play();
 				arrBombBang.add(bomBang);
 				arrBomb.remove(i);
 			}
 		}
-	}
-
-	for (int i = 0; i < arrBombBang.size(); i++) {
-		for (int j = 0; j < arrBomb.size(); j++) {
-			if (arrBombBang.get(i).BombBangvsBomb(arrBomb.get(j))) {
-				BombBang bomBang = new BombBang(arrBomb.get(j).getX(), arrBomb.get(j).getY(),
-						arrBomb.get(j).getSize(), arrBox);
-				arrBombBang.add(bomBang);
-				arrBomb.remove(j);
+		for (int j = 0; j < monsterList.size(); j++) {
+			for (int i = 0; i < arrBomb.size(); i++) {
+				if (arrBomb.get(i).BombvsActor(monsterList.get(j)) == 2) {
+					BombBang bomBang = new BombBang(arrBomb.get(i).getX(), arrBomb.get(i).getY(),
+							arrBomb.get(i).getSize(), boxList);
+					sound.getAudio(GameSound.BONG_BANG).play();
+					arrBombBang.add(bomBang);
+					arrBomb.remove(i);
+				}
 			}
 		}
-	}
-	for (int k = 0; k < arrBombBang.size(); k++) {
-		arrBombBang.get(k).deadlineBomb();
-		for (int j = 0; j < arrMonster.size(); j++) {
-			if (arrBombBang.get(k).isImpactBombBangVsActor(arrMonster.get(j))) {
-				if (arrMonster.get(j).getHeart() > 1) {
-					arrMonster.get(j).setHeart(arrMonster.get(j).getHeart() - 1);
-				} else {
-					if (arrMonster.get(j).getType() == Monster.BOSS) {
-						mBomber.setScore(mBomber.getScore() + 5000);
-					} else if (arrMonster.get(j).getType() == Monster.MinBOSS) {
-						mBomber.setScore(mBomber.getScore() + 500);
+
+		for (int i = 0; i < arrBombBang.size(); i++) {
+			for (int j = 0; j < arrBomb.size(); j++) {
+				if (arrBombBang.get(i).BombBangvsBomb(arrBomb.get(j))) {
+					BombBang bomBang = new BombBang(arrBomb.get(j).getX(), arrBomb.get(j).getY(),
+							arrBomb.get(j).getSize(), boxList);
+					arrBombBang.add(bomBang);
+					arrBomb.remove(j);
+				}
+			}
+		}
+		for (int k = 0; k < arrBombBang.size(); k++) {
+			arrBombBang.get(k).deadlineBomb();
+			for (int j = 0; j < monsterList.size(); j++) {
+				if (arrBombBang.get(k).BombBangVsActor(monsterList.get(j))) {
+					if (monsterList.get(j).getHeart() > 1) {
+						monsterList.get(j).setHeart(monsterList.get(j).getHeart() - 1);
 					} else {
-						mBomber.setScore(mBomber.getScore() + 200);
+						if (monsterList.get(j).getType() == Monster.BOSS) {
+							mBomber.setScore(mBomber.getScore() + 5000);
+						} else if (monsterList.get(j).getType() == Monster.MinBOSS) {
+							mBomber.setScore(mBomber.getScore() + 500);
+						} else {
+							mBomber.setScore(mBomber.getScore() + 200);
+						}
+						sound.getAudio(GameSound.MONSTER_DIE).play();
+						monsterList.remove(j);
 					}
-					GameSound.getIstance().getAudio(GameSound.MONSTER_DIE).play();
-					arrMonster.remove(j);
+				}
+			}
+			if (arrBombBang.get(k).getTimeLine() == 0) {
+				arrBombBang.remove(k);
+			}
+		}
+		for (int i = 0; i < arrBombBang.size(); i++) {
+			for (int j = 0; j < boxList.size(); j++) {
+				if (arrBombBang.get(i).BombBangvsBox(boxList.get(j))) {
+					boxList.remove(j);
+					// arrShawDow.remove(j);
 				}
 			}
 		}
-		if (arrBombBang.get(k).getTimeLine() == 0) {
-			arrBombBang.remove(k);
-		}
-	}
-	for (int i = 0; i < arrBombBang.size(); i++) {
-		for (int j = 0; j < arrBox.size(); j++) {
-			if (arrBombBang.get(i).isImpactBombBangvsBox(arrBox.get(j))) {
-				arrBox.remove(j);
-				// arrShawDow.remove(j);
+		for (int i = 0; i < arrBombBang.size(); i++) {
+			for (int j = 0; j < itemList.size(); j++) {
+				if (arrBombBang.get(i).BombBangvsItem(itemList.get(j))) {
+					itemList.remove(j);
+				}
 			}
 		}
 	}
-	for (int i = 0; i < arrBombBang.size(); i++) {
-		for (int j = 0; j < arrItem.size(); j++) {
-			if (arrBombBang.get(i).isImpactBombBangvsItem(arrItem.get(j))) {
-				arrItem.remove(j);
-			}
-		}
-	}
-}
-
-	*/
-	
-	
-/*	public void drawBoss(Graphics2D g2d) {
-		for (int i = 0; i < arrMonster.size(); i++) {
-			if (arrMonster.get(i).getType() == Monster.BOSS) {
-				arrMonster.get(i).drawActor(g2d);
-			}
-		}
-	}
-	
 	
 	
 
-	
-		public void checkImpactItem() {
-		for (int i = 0; i < arrItem.size(); i++) {
-			if (arrItem.get(i).isImpactItemVsBomber(mBomber)) {
-				GameSound.instance.getAudio(GameSound.ITEM).play();
-				if (arrItem.get(i).getType() == Item.Item_Bomb) {
+	public void collectItem() {
+		for (int i = 0; i < itemList.size(); i++) {
+			if (itemList.get(i).isImpactItemVsBomber(mBomber)) {
+				sound.getAudio(GameSound.ITEM).play();
+				if (itemList.get(i).getType() == Item.Item_Bomb) {
 					mBomber.setQuantityBomb(mBomber.getQuantityBomb() + 1);
-					arrItem.remove(i);
+					itemList.remove(i);
 					break;
 				}
-				if (arrItem.get(i).getType() == Item.Item_BombSize) {
+				if (itemList.get(i).getType() == Item.Item_BombSize) {
 					mBomber.setSizeBomb(mBomber.getSizeBomb() + 1);
-					arrItem.remove(i);
+					itemList.remove(i);
 					break;
 				}
-				if (arrItem.get(i).getType() == Item.Item_Shoe) {
+				if (itemList.get(i).getType() == Item.Item_Shoe) {
 					mBomber.setSpeed(mBomber.getSpeed() - 1);
-					arrItem.remove(i);
+					itemList.remove(i);
 					break;
 				}
 			}
@@ -563,7 +572,7 @@ public class Manager {
 
 
 
-*/
+
 
 	public ArrayList<Box> getArrBox() {
 		return boxList;
@@ -582,21 +591,8 @@ public class Manager {
 		}
 	}
 
-	public void setNewBomb() {
-		switch (round) {
-		case 1:
-			mBomber.setBounds(540, 495);
-			break;
-		case 2:
-			mBomber.setBounds(540, 495);
-			break;
-		case 3:
-			mBomber.setBounds(540, 495);
-			break;
-
-		default:
-			break;
-		}
+	public void setNewBomber() {
+		mBomber.setBounds(540,495);
 	}
  	
  	
@@ -609,8 +605,8 @@ public class Manager {
 				String str[] = line.split(":");
 				String name = str[0];
 				int score = Integer.parseInt(str[1]);
-				HighScore hightScore = new HighScore(name, score);
-				highscoreList.add(hightScore);
+				HighScore highScore = new HighScore(name, score);
+				highscoreList.add(highScore);
 			}
 			input.close();
 		} catch (FileNotFoundException e) {

@@ -36,7 +36,7 @@ public class BoomPanel extends JPanel implements Runnable{
 
     public BoomPanel(GUIManager guiManager) {
     	setLayout(null);
-        manager = new Manager(1);
+        manager = new Manager(2);
         this.guiManager = guiManager;
         gamePanel = pngame;
      //   addLabel();
@@ -72,17 +72,18 @@ public class BoomPanel extends JPanel implements Runnable{
             g2d.setFont(new Font("Georgia", Font.BOLD, 20));
             g2d.setPaint(Color.WHITE);
             g2d.drawString("HUST - ONE LOVE ONE FUTURE!", 300, 25);
-            
+        
 
 
-            
-           manager.draWBackground(g2d);
-           manager.drawAllItem(g2d);
-           manager.drawAllBox(g2d);
-           manager.drawAllBomb(g2d);
+            manager.draWBackground(g2d);
+            manager.drawAllItem(g2d);
+            manager.drawAllBox(g2d);
+            manager.drawAllBomb(g2d);
+            manager.drawInfo(g2d);
            g2d.drawString("GOOD GAME", 400,GUIFrame.GUI_H-50);
            manager.drawAllMonster(g2d);
-          manager.getBomber().drawActor(g2d);
+           manager.getBomber().drawActor(g2d);
+           manager.drawDialog(g2d, manager.getStatus());
 
         }
      };
@@ -90,14 +91,6 @@ public class BoomPanel extends JPanel implements Runnable{
     @Override
     public void run() {
         while (IS_RUNNING) {
-            while (IS_PAUSE) {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                
-            }
             // Điều khiển nhan vật
             if (bitSet.get(KeyEvent.VK_A) || bitSet.get(KeyEvent.VK_LEFT)) {
 				manager.getBomber().changeOrient(Bomber.LEFT);
@@ -126,11 +119,49 @@ public class BoomPanel extends JPanel implements Runnable{
 			}
 
             manager.setRunBomer();
+            manager.collectItem();
+            manager.deadLineAllBomb();
+            manager.checkDead();
+            manager.checkWinAndLose();
 			manager.moveAllMonster(count);
 			gamePanel.repaint();
+
 			count++;
+            // nếu thua chuyển về menu
+            if (manager.getStatus()==1){
+                timeLose++;
+                if(timeLose==3000){
+                    manager.initManager();
+                    guiManager.showMenu();
+                    timeLose=0;
+                }
+            }
+            // nếu thắng round1,2 chuyển nextround
+            if (manager.getStatus()==2){
+                timeNextRound++;
+                if(timeNextRound==5000){
+                    manager.initManager(); 
+                    timeNextRound=0;
+                }
+            }
+            // neu win round 3, you win
+            if (manager.getStatus()==3){
+                timeNextRound++;
+                if(timeNextRound==3000){
+                    manager.initManager(); 
+                    timeNextRound=0;
+                }
+            }
+
 			if (count == 1000000) {
 				count = 0;
+			}
+            if (manager.getBomber().getStatus() == Bomber.DEAD) {
+				timeDead++;
+				if (timeDead == 1000) {
+					manager.setNewBomber();
+					timeDead = 0;
+				}
 			}
 
             try {
@@ -143,9 +174,9 @@ public class BoomPanel extends JPanel implements Runnable{
    }
    	@SuppressWarnings("removal")
     private void runActor() {
-		i++;
+        i++;
 		if (i == 200) {
-			GameSound.getIstance().getAudio(GameSound.FOOT).play();
+			manager.sound.getAudio(GameSound.FOOT).play();
 			i = 0;
 		}
 	}
