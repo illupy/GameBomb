@@ -14,7 +14,7 @@ public abstract class Monster extends Actor {
 		this.x = x;
 		this.y = y;
 		this.type = type;
-		//this.runBomb = Bomber.DISALLOW_RUN;
+		this.runBomb = Bomber.NO_RUN;
 		this.orient = orient;
 		this.speed = speed;
 		this.heart = heart;
