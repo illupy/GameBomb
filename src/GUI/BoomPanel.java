@@ -64,21 +64,21 @@ public class BoomPanel extends JPanel implements Runnable{
         @Override
         public void paintComponent(Graphics g){
             Graphics2D g2d = (Graphics2D) g;
+            manager.draWBackground(g2d);
+            manager.drawAllBomb(g2d);
             g2d.setStroke(new java.awt.BasicStroke(2));
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setPaint(Color.BLACK);
             g2d.fillRect(0, 0, 947, 45);
-            g2d.fillRect(0, GUIFrame.GUI_H-150, 947, 150);
+            g2d.fillRect(0, GUIFrame.GUI_H-72, 947, 72);
             g2d.setFont(new Font("Georgia", Font.BOLD, 20));
             g2d.setPaint(Color.WHITE);
             g2d.drawString("HUST - ONE LOVE ONE FUTURE!", 300, 25);
-        
-
-
-            manager.draWBackground(g2d);
+            
+            
+            
             manager.drawAllItem(g2d);
             manager.drawAllBox(g2d);
-            manager.drawAllBomb(g2d);
             manager.drawInfo(g2d);
            g2d.drawString("GOOD GAME", 400,GUIFrame.GUI_H-50);
            manager.drawAllMonster(g2d);
