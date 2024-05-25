@@ -1,4 +1,10 @@
+tai:29850
+:29600
+Tai:29100
 null:2200
 null:1900
+null:900
+null:900
 null:700
-hhh:0
+tai:200
+:200

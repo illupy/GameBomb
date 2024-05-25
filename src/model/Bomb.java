@@ -86,7 +86,6 @@ public class Bomb extends Actor {
 			}
 			return 1;
 		}
-		;
 		return 0;
 	}	 
 	 

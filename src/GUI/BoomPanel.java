@@ -121,7 +121,7 @@ public class BoomPanel extends JPanel implements Runnable{
             manager.setRunBomer();
             manager.collectItem();
             manager.deadLineAllBomb();
-            manager.checkDead();
+           // manager.checkDead();
             manager.checkWinAndLose();
 			manager.moveAllMonster(count);
 			gamePanel.repaint();
@@ -149,6 +149,7 @@ public class BoomPanel extends JPanel implements Runnable{
                 timeNextRound++;
                 if(timeNextRound==3000){
                     manager.initManager(); 
+                    guiManager.showMenu();
                     timeNextRound=0;
                 }
             }
