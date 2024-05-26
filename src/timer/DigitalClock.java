@@ -3,6 +3,7 @@ package timer;
 import java.util.Observable;
 import java.util.Observer;
 
+@SuppressWarnings("deprecation")
 public class DigitalClock implements Observer {
 	// private JLabel clockLabel;
 	private int minute;

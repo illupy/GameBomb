@@ -4,6 +4,7 @@ import java.applet.Applet;
 import java.applet.AudioClip;
 import java.util.HashMap;
 
+@SuppressWarnings("removal")
 public class GameSound {
 	public static GameSound instance;
 

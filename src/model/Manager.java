@@ -547,6 +547,7 @@ public void initManager() {
 	
 	
 
+	@SuppressWarnings("removal")
 	public void collectItem() {
 		for (int i = 0; i < itemList.size(); i++) {
 			if (itemList.get(i).isImpactItemVsBomber(mBomber)) {

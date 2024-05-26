@@ -6,6 +6,7 @@ import java.util.Observable;
 
 import javax.swing.Timer;
 
+@SuppressWarnings("deprecation")
 public class Countdown extends Observable {
 	private Timer timer;
 	private int minute;
