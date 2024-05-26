@@ -58,7 +58,8 @@ public class Manager {
 	
 	
 
- public void initManager() {
+ @SuppressWarnings("removal")
+public void initManager() {
 		switch (round) {
 		case 1:
 			countdown.update(2, 0);
@@ -154,6 +155,7 @@ public class Manager {
     }
     
     
+	@SuppressWarnings("removal")
 	public void innitBomb() {
 		if (mBomber.getStatus() == Bomber.DEAD) {
 			return;
@@ -423,6 +425,7 @@ public class Manager {
 /* */
 	
 	// chưa sửa
+	@SuppressWarnings("removal")
 	public void checkDead() {
 		if (mBomber.getHeart() < 3 && mBomber.getHeart() > 0) {
 			getCountdown().getTimer().start();
@@ -468,6 +471,7 @@ public class Manager {
 		}
 	}
 	
+	@SuppressWarnings("removal")
 	public void deadLineAllBomb() {
 		for (int i = 0; i < arrBomb.size(); i++) {
 			arrBomb.get(i).deadlineBomb();

@@ -1,8 +1,5 @@
 package GUI;
 
-//import models.Bomber;
-//import models.GameManager;
-//import sounds.GameSound;
 
 import javax.swing.*;
 
@@ -20,14 +17,12 @@ public class BoomPanel extends JPanel implements Runnable{
     //private GameManager gameManager;
 	private Manager manager;
     protected JPanel gamePanel;
-    private JLabel lb_back;
     private BitSet bitSet = new BitSet();
     private GUIManager guiManager;
     private int move=0,i=0;
     private int count=0;
     private int timeDead = 0;
     private int timeNextRound = 0;
-    private int timeWin = 0;
     private int timeLose = 0;
     private boolean IS_RUNNING = true;
     private boolean IS_PAUSE = true;
@@ -39,7 +34,6 @@ public class BoomPanel extends JPanel implements Runnable{
         manager = new Manager(2);
         this.guiManager = guiManager;
         gamePanel = pngame;
-        //addLabel();
         gamePanel.addKeyListener(keyAdapter);
        thread = new Thread(this);
        thread.start();
@@ -49,16 +43,6 @@ public class BoomPanel extends JPanel implements Runnable{
     public void chooseActor(int type) {
 		manager = new Manager(type);
 	}
-
-    private void addLabel() {
-        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/Images/button_back.png"));
-        lb_back = new JLabel();
-        lb_back.setIcon(imageIcon);
-        lb_back.setSize(imageIcon.getIconWidth(), imageIcon.getIconHeight());
-        lb_back.setLocation(729, 564+10);
-       // lb_back.addMouseListener(this);
-        gamePanel.add(lb_back);
-    }
 
     private JPanel pngame  = new JPanel(){
         @Override
@@ -156,6 +140,13 @@ public class BoomPanel extends JPanel implements Runnable{
 
 			if (count == 1000000) {
 				count = 0;
+			}
+            if (move == 0) {
+				manager.changeOrientAll();
+				move = 5000;
+			}
+			if (move > 0) {
+				move--;
 			}
             if (manager.getBomber().getStatus() == Bomber.DEAD) {
 				timeDead++;
