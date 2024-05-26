@@ -39,7 +39,7 @@ public class BoomPanel extends JPanel implements Runnable{
         manager = new Manager(2);
         this.guiManager = guiManager;
         gamePanel = pngame;
-     //   addLabel();
+        //addLabel();
         gamePanel.addKeyListener(keyAdapter);
        thread = new Thread(this);
        thread.start();
@@ -57,7 +57,7 @@ public class BoomPanel extends JPanel implements Runnable{
         lb_back.setSize(imageIcon.getIconWidth(), imageIcon.getIconHeight());
         lb_back.setLocation(729, 564+10);
        // lb_back.addMouseListener(this);
-        add(lb_back);
+        gamePanel.add(lb_back);
     }
 
     private JPanel pngame  = new JPanel(){
@@ -121,7 +121,7 @@ public class BoomPanel extends JPanel implements Runnable{
             manager.setRunBomer();
             manager.collectItem();
             manager.deadLineAllBomb();
-           // manager.checkDead();
+            manager.checkDead();
             manager.checkWinAndLose();
 			manager.moveAllMonster(count);
 			gamePanel.repaint();

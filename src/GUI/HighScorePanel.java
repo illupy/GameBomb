@@ -1,6 +1,6 @@
 package GUI;
 
-//import models.HighScore;
+import model.HighScore;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,10 +8,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
-//import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class HighScorePanel extends JPanel implements MouseListener {
- //   private ArrayList<HighScore> highScores;
+   private ArrayList<HighScore> highScores;
     private GUIManager guiManager;
     private JLabel lb_back;
 
@@ -19,7 +19,7 @@ public class HighScorePanel extends JPanel implements MouseListener {
         this.guiManager = guiManager;
         setLayout(null);
         addComp();
-     //   initHighScore("src/highScores/highscore.txt");
+        initHighScore("src/highScore/highscore.txt");
     }
 
     private void addComp() {//thiết lập vị trí, chèn ảnh cancel1, thêm tín hiệu chuột
@@ -47,13 +47,14 @@ public class HighScorePanel extends JPanel implements MouseListener {
         // Draw background;
         Image background = new ImageIcon(getClass().getResource("/Images/background_Menu2.png")).getImage();
         g2d.drawImage(background, 0, 0,  null);
-        Image backgrLb = new ImageIcon(getClass().getResource("/Images/background_hightscore.png")).getImage();
+        Image backgrLb = new ImageIcon(getClass().getResource("/Images/background_highscore.png")).getImage();
         g2d.drawImage(backgrLb, 55, 40, null);
-    /*ẩn tạm cái in bảng điểm 	
-         Draw HighScore
-        int y = 60;
+ //   ẩn tạm cái in bảng điểm 	
+        // Draw HighScore
+        int y = 170;
         int x = 200;
        for (int i = 0; i < highScores.size(); i++) {
+            if (i==9) break;
             g2d.setColor(Color.PINK);
             g2d.setFont(new Font("Arial", Font.BOLD, 40));
             g2d.drawString(Integer.toString(i + 1), x, y);
@@ -61,11 +62,11 @@ public class HighScorePanel extends JPanel implements MouseListener {
             g2d.drawString(Integer.toString(highScores.get(i).getScore()), x + 400, y);
             y += 50;
         } 
-      */       
+           
     }
 
- /*   public void initHighScore(String highScorePath) {
-   //     highScores = new ArrayList<>();
+    public void initHighScore(String highScorePath) {
+       highScores = new ArrayList<>();
         try {
             String line = "";
             FileReader fileReader = new FileReader(highScorePath);
@@ -76,15 +77,16 @@ public class HighScorePanel extends JPanel implements MouseListener {
                 String[] arr = line.split(":");
                 name = arr[0];
                 score = Integer.parseInt(arr[1]);
-       //         HighScore highScore = new HighScore(name, score);
-       //         highScores.add(highScore);
+               HighScore highScore = new HighScore(name, score);
+               highScores.add(highScore);
             }
+            bufferedReader.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-*/
+
     @Override
     public void mouseClicked(MouseEvent e) {
     }
