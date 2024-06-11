@@ -299,6 +299,7 @@ public void initManager() {
       
      }
      public void drawAllMonster(Graphics2D g2d){
+		 if (monsterList.size()>0)
          for (Monster monster : monsterList) {
              monster.drawActor(g2d);
          }

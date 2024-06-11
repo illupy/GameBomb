@@ -1,10 +1,10 @@
+null:30250
 tai:29850
 :29600
 Tai:29100
+ ....:28950
+tai:26800
+Taiiiii:9050
 null:2200
 null:1900
 null:900
-null:900
-null:700
-tai:200
-:200

@@ -8,8 +8,12 @@ import model.Manager;
 import sound.GameSound;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.BitSet;
 
 
@@ -30,16 +34,33 @@ public class BoomPanel extends JPanel implements Runnable{
     Thread thread;
 
     public BoomPanel(GUIManager guiManager) {
-    	setLayout(null);
-        manager = new Manager(2);
+        manager = new Manager(1);
         this.guiManager = guiManager;
         gamePanel = pngame;
+        gamePanel.setLayout(null);
+        JButton menu= newMenuBtn();
+        menu.setBounds(740, GUIFrame.GUI_H-110, 175, 38);
+        gamePanel.add(menu);
+        gamePanel.repaint();
         gamePanel.addKeyListener(keyAdapter);
        thread = new Thread(this);
        thread.start();
        setFocusable(true);
        
     }
+    private JButton newMenuBtn() {
+        JButton btnmenu = new JButton();
+        btnmenu.setText("Menu");
+		btnmenu.setBackground(Color.WHITE);
+		btnmenu.setForeground(Color.black);
+		btnmenu.setFont(new Font("Arial", Font.PLAIN, 25));
+		btnmenu.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent aev){
+                guiManager.showMenu();
+            }
+        });
+        return btnmenu;
+        }
     public void chooseActor(int type) {
 		manager = new Manager(type);
 	}
@@ -200,5 +221,6 @@ public class BoomPanel extends JPanel implements Runnable{
     public void setIS_PAUSE(boolean IS_PAUSE) {
         this.IS_PAUSE = IS_PAUSE;
     }
+  
     
 }
